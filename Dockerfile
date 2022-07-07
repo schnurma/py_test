@@ -1,4 +1,4 @@
-# Integration of the CO2 Sensor SGP30 from Adafruit and Blinka with the Base Docker container to run applications which use mraa library
+# Integration of the CO2 Sensor SGP30 from Adafruit and Blinka with the Base Docker Container to run applications which use mraa library
 # to run this container use this command for integrated needed folder and privileges
 # docker run -it --name <container name> --privileged -v /dev:/dev --network host --group-add dialout  <image name>
 
@@ -77,13 +77,13 @@ RUN pip3 install Adafruit-Blinka
 RUN sudo pip3 install adafruit-circuitpython-sgp30
 
 
-# ROS2 Depdendencies
+# ROS2 Dependencies
 # for only Python should be used setup.py & .cfg but there are some issues with the --symlink-install option
 COPY CMakeLists.txt /root/colcon_ws/src/py_test/.
 COPY package.xml /root/colcon_ws/src/py_test/.
 COPY README.md /root/colcon_ws/src/py_test/.
 COPY src /root/colcon_ws/src/py_test/src/.
-# Python Lib Folder
+# Python Lib Folder (mandatory with init.py)
 COPY py_test /root/colcon_ws/src/py_test/py_test
 # CPP Lib Folder not needed!
 #COPY include /root/colcon_ws/src/py_test/include
@@ -96,7 +96,7 @@ RUN cd /root/colcon_ws/ \
 
 # Blinka walkaround
 # Libs are located /usr/local/lib/python3.?/dist-packages
-# python3.8 is the used python3 version!
+# python3.8 is the used in this image! 
 # complete folder from platformdetect and blinka has to be replaced as long as there is no offical release of the iot2050 or via git...!
 COPY blinka/src /usr/local/lib/python3.8/dist-packages
 COPY platformdetect /usr/local/lib/python3.8/dist-packages
@@ -111,6 +111,7 @@ RUN echo "source /opt/ros/galactic/setup.bash" >> ~/.bashrc \
 # set workdirectory (my home directory)
 WORKDIR /root/colcon_ws
 
+# RUN Node
 #CMD source /opt/ros/galactic/setup.bash \
 #    && source install/setup.bash \
 #    && ros2 run sgp30 sgp30_node
